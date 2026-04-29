@@ -1,290 +1,298 @@
-# Documentación Técnica y Funcional del Proyecto
+# 🟣 Purple Desire 2.0 - Boutique Sensual Anónima
 
-## Sistema de E-Commerce: "Purple Desire"
+**Sistema de E-Commerce con Backend y Panel de Vendedor**
 
-**Tipo de Proyecto:** Aplicación Web de Comercio Electrónico (Boutique Sensual Anónima)  
-**Tecnologías:** HTML5, CSS3, Vanilla JavaScript (DOM & LocalStorage)
-
----
-
-## 1. Introducción y Justificación del Proyecto
-
-"Purple Desire" es un prototipo funcional de una tienda en línea enfocada en la venta de productos de bienestar adulto, lencería y juguetes.
-
-### Problema a resolver
-El principal obstáculo en esta industria es:
-- Vergüenza al comprar
-- Falta de privacidad
-- Miedo al juicio social
-
-### Solución propuesta
-Se diseñó una plataforma basada en:
-- Navegación anónima
-- Interfaz discreta
-- Experiencia centrada en privacidad
-
-El objetivo es reducir la fricción de compra y aumentar la confianza del usuario.
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.x-brightgreen)](https://mongodb.com)
+[![Express](https://img.shields.io/badge/Express-4.x-lightgrey)](https://expressjs.com)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/es/docs/Web/JavaScript)
 
 ---
 
-## 2. Tecnologías Utilizadas
+## 📋 Tabla de Contenidos
 
-El proyecto sigue un enfoque **Vanilla Web Development**, sin frameworks.
-
-- **HTML5**
-  - Estructura completa de la aplicación
-  - Uso de modales, formularios y secciones semánticas
-
-- **CSS3**
-  - Diseño responsive
-  - Variables globales (`:root`)
-  - Animaciones y efectos visuales (Glassmorphism, neón)
-
-- **JavaScript (ES6+)**
-  - Lógica completa de la aplicación
-  - Manipulación del DOM
-  - Eventos
-  - Persistencia con LocalStorage
-
-- **FontAwesome**
-  - Iconos visuales para mejorar la UI
+- [Descripción](#-descripción)
+- [Requisitos Previos](#-requisitos-previos)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Instalación Paso a Paso](#-instalación-paso-a-paso)
+- [Credenciales de Acceso](#-credenciales-de-acceso)
+- [URLs de Acceso](#-urls-de-acceso)
+- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [Arquitectura](#-arquitectura)
+- [Funcionalidades](#-funcionalidades)
+- [API Endpoints](#-api-endpoints)
+- [Solución de Problemas](#-solución-de-problemas)
 
 ---
 
-## 3. Arquitectura del Proyecto (Modular)
+## 📝 Descripción
 
-El proyecto está dividido en **módulos independientes**, cada uno con una responsabilidad clara.
+"Purple Desire" es una aplicación web completa de comercio electrónico enfocada en la venta de productos de bienestar adulto, lencería y juguetes. El sistema está diseñado con un enfoque en la privacidad y discreción del usuario.
 
-### Estructura general
+### Características principales:
+- 🏪 Tienda online con catálogo de productos
+- 👔 Panel de vendedor para gestión completa
+- 📦 Control de inventario con stock
+- 🚚 Seguimiento de pedidos por estados
+- 🔐 Sistema de autenticación con roles
+- 👁️ Modo discreto (SFW - Safe For Work)
+- 💾 Persistencia en base de datos MongoDB
+- 📱 Diseño responsive
+
+---
+
+## 💻 Requisitos Previos
+
+### Software necesario:
+
+| Software | Versión | Descarga |
+|----------|---------|----------|
+| **Node.js** | 18.x o 20.x LTS | [nodejs.org](https://nodejs.org) |
+| **MongoDB** | 7.x o superior | [mongodb.com](https://www.mongodb.com/try/download/community) |
+| **Navegador** | Chrome/Firefox/Edge | Cualquiera moderno |
+| **Git** | 2.x o superior | [git-scm.com](https://git-scm.com) (opcional) |
+
+### Verificar instalación:
+```bash
+node --version    # Debe mostrar v18.x.x o v20.x.x
+npm --version     # Debe mostrar 9.x.x o 10.x.x
+mongosh --version # Debe mostrar la versión de MongoDB
 
 
-/PURPLE-DESIRE-2.0
+PURPLE DESIRE 2.0/
 │
-├── index.html
-├── style.css
-├── app.js
+├── backend/                          # Servidor y API
+│   ├── config/
+│   │   └── db.js                     # Conexión a MongoDB
+│   ├── middleware/
+│   │   └── auth.js                   # Autenticación JWT
+│   ├── models/
+│   │   ├── Product.js                # Modelo de productos
+│   │   ├── Order.js                  # Modelo de pedidos
+│   │   └── User.js                   # Modelo de usuarios
+│   ├── routes/
+│   │   ├── auth.js                   # Rutas de autenticación
+│   │   ├── orders.js                 # Rutas de pedidos
+│   │   └── products.js               # Rutas de productos
+│   ├── .env                          # Variables de entorno
+│   ├── package.json                  # Dependencias
+│   ├── seed.js                       # Script para datos iniciales
+│   └── server.js                     # Servidor principal
 │
-├── /js
-│ ├── config.js
-│ ├── ui.js
-│ ├── productos.js
-│ ├── carrito.js
-│ ├── DocumentacionJs.txt
+├── frontend/                         # Aplicación cliente
+│   ├── css/
+│   │   ├── base.css                  # Estilos base y reset
+│   │   ├── components.css            # Botones, inputs, toasts
+│   │   ├── layout.css                # Header, hero, grid, footer
+│   │   ├── modals.css                # Modales y paneles
+│   │   └── variables.css             # Colores y temas
+│   ├── images/                       # Imágenes de productos
+│   ├── js/
+│   │   ├── data.js                   # Datos de respaldo
+│   │   └── main.js                   # Lógica principal
+│   ├── payment/                      # Iconos de métodos de pago
+│   ├── vendor-panel/                 # Panel de vendedor
+│   │   ├── vendor.html               # Interfaz del panel
+│   │   ├── vendor.css                # Estilos del panel
+│   │   └── vendor.js                 # Lógica del panel
+│   └── index.html                    # Tienda principal
 │
-├── /css
-│ ├── variables.css
-│ ├── components.css
-│ ├── header-footer.css
-│ ├── cart.css
-│ ├── hero-slider.css
-│ ├── products.css
-│ ├── modals-extra.css
-│ ├── DocumentacionCss.txt
-│
-├── /images
-└── /payment
+└── README.md                         # Este archivo
 
 
----
+# 🚀 Instalación Paso a Paso
 
-## 4. Documentación por Módulos
+## Paso 1: Instalar Node.js
+- Ve a https://nodejs.org  
+- Descarga la versión **LTS (recomendada)**  
+- Instala con opciones por defecto  
+- Verifica:
+```bash
+node --version
+npm --version
 
-Cada módulo del sistema tiene su propia documentación detallada en archivos `.txt`.
+Paso 2: Instalar MongoDB
+Opción A - MongoDB Local (Recomendado):
+Ve a https://mongodb.com/try/download/community
+Descarga el instalador según tu sistema operativo
+Instala seleccionando Complete
+Marca Install MongoD as a Service
+Verifica que el servicio esté corriendo
+Opción B - MongoDB Atlas (Nube gratuita):
+Ve a https://mongodb.com/atlas
+Crea una cuenta gratuita
+Crea un cluster (M0 Sandbox gratis)
+Crea usuario de base de datos
+Permite acceso desde: 0.0.0.0/0
+Copia la URL de conexión
 
-### Importante
-- **DocumentacionCss.txt**
-  - Explica toda la organización del CSS
-  - Cómo modificar estilos
-  - Cómo funcionan las clases
 
-- **DocumentacionJs.txt**
-  - Explica toda la lógica de JavaScript
-  - Flujo completo de la aplicación
-  - Interacción entre módulos
+Paso 3: Configurar variables de entorno
 
-Esto permite que cualquier persona pueda entender el proyecto módulo por módulo sin necesidad de leer todo el código.
+Archivo: backend/.env
 
----
 
-## 5. Arquitectura de Almacenamiento (Persistencia de Datos)
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/purple_desire
+JWT_SECRET=purple_desire_secret_key_2024
+JWT_EXPIRE=7d
 
-Se utiliza **LocalStorage** para simular una base de datos.
 
-### Claves utilizadas
+Si usas Atlas:
 
-- `pd_products_cop`
-  - Guarda todos los productos (incluyendo los creados por admin)
+MONGODB_URI=mongodb+srv://USUARIO:PASSWORD@CLUSTER.mongodb.net/purple_desire
 
-- `pd_cart_cop`
-  - Guarda el carrito de compras
+Paso 4: Instalar dependencias
 
-- `pd_wishlist`
-  - Guarda productos favoritos
+cd "PURPLE DESIRE 2.0/backend"
+npm install
 
-- `isAdultVerified` (sessionStorage)
-  - Guarda si el usuario confirmó ser mayor de edad
+Paso 5: Crear datos iniciales (Seed)
 
----
+node seed.js
 
-## 6. Módulos y Funcionalidades Principales
+Crea:
 
-### A. Módulo de Inicialización (app.js)
+3 usuarios (admin, vendedor1, vendedor2)
+10 productos de prueba
 
-Es el **orquestador principal**:
-- Espera a que cargue el DOM
-- Inicializa:
-  - Productos
-  - Carrito
-  - Wishlist
-  - Carrusel
-- Ejecuta verificaciones (edad)
+🔑 Credenciales de Acceso
+Rol	Usuario	Contraseña	Acceso
+👑 Administrador	admin	Admin123!	Tienda + Panel
+👔 Vendedor 1	vendedor1	Vendedor123!	Tienda + Panel
+👔 Vendedor 2	vendedor2	Vendedor123!	Tienda + Panel
 
----
+Paso 6: Iniciar el servidor
 
-### B. Módulo de Configuración (config.js)
+npm run dev
 
-Contiene:
-- Estado global:
-  - Usuario
-  - Carrito
-  - Wishlist
-  - Categoría activa
-- Datos base:
-  - Lista de productos por defecto
+Deberías ver:
 
-Es la "base de datos" del sistema.
+✅ MongoDB conectado
+🚀 Servidor corriendo en http://localhost:5000
+📦 API: http://localhost:5000/api
+🏪 Tienda: http://localhost:5000
+👨‍💼 Panel Vendedor: http://localhost:5000/vendor
 
----
 
-### C. Módulo de Interfaz (ui.js)
+Paso 7: Abrir en el navegador
 
-Controla:
-- Modales (abrir/cerrar)
-- Toasts (notificaciones)
-- Alertas personalizadas
-- Carrusel de productos
-- Modo discreto (SFW)
+🏪 Tienda: http://localhost:5000
+👔 Panel Vendedor: http://localhost:5000/vendor
 
-Es el encargado de todo lo visual dinámico.
 
----
 
-### D. Módulo de Productos (productos.js)
 
-Responsable de:
-- Renderizar productos en pantalla
-- Filtrar productos:
-  - Por categoría
-  - Por texto
-- Ordenar productos por precio
-- CRUD de productos (admin)
+🌐 URLs de Acceso
+Servicio	URL
+🏪 Tienda	http://localhost:5000
 
----
+👔 Panel Vendedor	http://localhost:5000/vendor
 
-### E. Módulo de Carrito (carrito.js)
+📦 API Productos	http://localhost:5000/api/products
 
-Controla:
-- Agregar productos al carrito
-- Cambiar cantidades
-- Eliminar productos
-- Cálculo de:
-  - Subtotal
-  - Impuestos
-  - Envío
-  - Total
+📋 API Pedidos	http://localhost:5000/api/orders
 
-También incluye:
-- Wishlist
-- Checkout
-- Autenticación básica (alias)
+🔐 API Auth	http://localhost:5000/api/auth
 
----
+🛠️ Tecnologías Utilizadas
+Frontend
+HTML5
+CSS3 (Grid, Flexbox, Animaciones)
+JavaScript ES6+
+FontAwesome 6
+Backend
+Node.js
+Express.js
+MongoDB + Mongoose
+JWT
+bcryptjs
+Nodemon
+🏗️ Arquitectura
+Frontend (Modular)
+Productos
+Carrito
+Usuario
+Pedidos
+Admin
+UI
+SFW Mode
+Backend (API)
 
-## 7. Flujo General de la Aplicación
+server.js
+├── /api/auth
+├── /api/products
+├── /api/orders
+└── /api/orders/stats/dashboard
 
-1. Carga la página
-2. Se ejecuta `app.js`
-3. Se valida edad
-4. Se renderizan productos
-5. Usuario interactúa:
-   - Filtra
-   - Agrega al carrito
-   - Guarda en wishlist
-6. Puede hacer checkout
-7. Se simula pago y rastreo
 
----
+⚡ Funcionalidades
+Tienda
+Catálogo de productos
+Filtros y búsqueda
+Carrito lateral
+Wishlist
+Checkout
+Seguimiento de pedidos
+Modo discreto (SFW)
+Perfil desechable
+Responsive design
+Panel Vendedor
+Dashboard
+Gestión de pedidos
+Estados de pedidos
+CRUD productos
+Control de stock
+Alertas de inventario
+Sistema
+JWT Auth
+Roles (admin, vendedor, cliente)
+MongoDB persistente
+API REST
+Modo offline básico
+📡 API Endpoints
+Auth
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+Productos
+GET /api/products
+POST /api/products
+PUT /api/products/:id
+DELETE /api/products/:id
+Pedidos
+GET /api/orders
+POST /api/orders
+PUT /api/orders/:id/estado
+🔧 Solución de Problemas
+npm no funciona
 
-## 8. Estrategias de Psicología de Ventas
+Instalar Node.js y reiniciar terminal
 
-El sistema incluye técnicas de marketing:
+MongoDB no conecta
 
-### 1. FOMO (Urgencia)
-- Mensajes como:
-  - "Últimas unidades"
-- Generados dinámicamente
+Verificar servicio MongoDB activo
 
-### 2. Prueba Social
-- Reseñas simuladas
-- Usuarios anónimos
+Puerto ocupado
 
-### 3. Refuerzo positivo
-- Toasts
-- Alertas visuales
+Cambiar en .env:
 
----
+PORT=5001
 
-## 9. Diseño Responsivo
+Error de módulos
 
-- Uso de:
-  - Flexbox
-  - CSS Grid
-- Adaptable a:
-  - Móviles
-  - Tablets
-  - Escritorio
 
----
+rm -rf node_modules package-lock.json
+npm install
 
-## 10. Características Especiales
 
-- Navegación anónima
-- Empaque ciego (concepto UX)
-- Carrito lateral dinámico
-- Barra de progreso de envío
-- Modal de rastreo simulado
-- Panel de administración oculto
 
----
+🔄 Comandos Útiles
 
-## 11. Mantenibilidad y Escalabilidad
+npm run dev
+npm start
+node seed.js
+npm update
+npm list --depth=0
 
-El proyecto está preparado para crecer:
 
-- Código modular
-- Separación de responsabilidades
-- Cada archivo tiene una función clara
-- Documentación independiente por módulo
-
-Esto permite:
-- Agregar nuevas funcionalidades fácilmente
-- Cambiar partes sin romper otras
-- Entender el sistema rápidamente
-
----
-
-## 12. Conclusión
-
-"Purple Desire" no es solo una tienda, es una demostración de:
-
-- Arquitectura modular en frontend
-- Manejo completo del DOM
-- Persistencia sin backend
-- Diseño UX enfocado en privacidad
-
-Combina:
-- Desarrollo técnico sólido
-- Diseño centrado en usuario
-- Estrategias de conversión
-
-Es un proyecto completo a nivel de frontend que simula un sistema real de e-commerce.
