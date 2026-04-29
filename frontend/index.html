@@ -94,7 +94,7 @@
         <div class="modal-content glass-effect" style="max-width: 600px; display: flex; flex-wrap: wrap; gap: 20px; text-align: left;">
             <span class="close-btn" onclick="document.getElementById('productModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
             <div style="flex: 1; min-width: 250px;">
-                <img id="detailImg" src="" style="width: 100%; border-radius: 10px; background: white; padding: 10px; object-fit: contain;">
+                <img id="detailImg" src="" style="width: 100%; border-radius: 10px; background: white; padding: 10px; object-fit: contain;" alt="Producto">
             </div>
             <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
                 <h2 id="detailName" style="margin-bottom: 5px;"></h2>
@@ -233,8 +233,18 @@
             <h1>Purple <span class="neon-text">Desire</span></h1>
         </div>
         <nav>
-            <button id="btnAdminPanel" class="nav-btn hidden" onclick="abrirAdminModal()"><i class="fa-solid fa-plus"></i> Añadir Prod.</button>
-            <button id="btnLogin" class="nav-btn"><i class="fa-solid fa-user-secret"></i> <span id="userNameDisplay">Invitado</span></button>
+            <!-- ⬇️ NUEVO: Botón de acceso al Panel de Vendedor -->
+            <a href="/vendor" class="nav-btn" title="Panel de Vendedor" style="text-decoration:none;">
+                <i class="fa-solid fa-user-tie"></i> Panel
+            </a>
+            
+            <button id="btnAdminPanel" class="nav-btn hidden" onclick="abrirAdminModal()">
+                <i class="fa-solid fa-plus"></i> Añadir Prod.
+            </button>
+            
+            <button id="btnLogin" class="nav-btn">
+                <i class="fa-solid fa-user-secret"></i> <span id="userNameDisplay">Invitado</span>
+            </button>
             
             <!-- Botón del efecto CENSURA (BLUR) -->
             <button class="nav-btn" onclick="toggleSFW()" title="Modo Discreto (Censurar Imágenes)">
@@ -253,7 +263,10 @@
             </button>
             
             <!-- Despliegue del panel lateral de Carrito -->
-            <button id="btnCartToggle" class="nav-btn"><i class="fa-solid fa-bag-shopping"></i> <span id="cartCount" class="badge">0</span></button>
+            <button id="btnCartToggle" class="nav-btn">
+                <i class="fa-solid fa-bag-shopping"></i> 
+                <span id="cartCount" class="badge">0</span>
+            </button>
         </nav>
     </header>
 
@@ -279,7 +292,9 @@
                 <div class="summary-row"><span>Envío Discreto:</span> <span>$<span id="cartShipping">0</span></span></div>
             </div>
             <div class="cart-total"><span>TOTAL:</span> <span>$<span id="cartTotal">0</span></span></div>
-            <button class="btn btn-primary w-100" onclick="abrirCheckout()" style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Ir a Pagar</button>
+            <button class="btn btn-primary w-100" onclick="abrirCheckout()" style="margin-top: 15px;">
+                <i class="fa-solid fa-credit-card"></i> Ir a Pagar
+            </button>
         </div>
     </div>
 
