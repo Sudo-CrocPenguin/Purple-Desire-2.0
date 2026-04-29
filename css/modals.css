@@ -1,0 +1,72 @@
+/* ==========================================================================
+   SISTEMA DE MODALES Y PANELES LATERALES
+   Estilos de los overlays, pop-ups, carrito de compras lateral y checkout.
+   ========================================================================== */
+
+/* OVERLAYS (Fondo negro semi-transparente de los modales) */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: none; justify-content: center; align-items: center; z-index: 3000; overflow-y: auto; padding: 20px 0;}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+.modal-content { padding: 25px; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; position: relative; margin: auto; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+.close-btn:hover { color: var(--neon-pink); }
+
+/* SIDEBAR DEL CARRITO DE COMPRAS */
+.cart-sidebar { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background-color: var(--bg-card); border-left: 1px solid var(--neon-purple); z-index: 2000; transition: right 0.4s cubic-bezier(0.8, 0, 0.2, 1); display: flex; flex-direction: column; }
+.cart-sidebar.open { right: 0; box-shadow: -5px 0 30px rgba(138, 43, 226, 0.2); }
+.cart-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+.close-btn-cart { background: none; border: none; color: var(--text-light); font-size: 2rem; cursor: pointer; transition: 0.3s; }
+.close-btn-cart:hover { color: var(--neon-pink); }
+
+/* ÍTEMS DENTRO DEL CARRITO */
+.cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; background: #070707; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #222; }
+.cart-item img { width: 60px; height: 60px; object-fit: contain; border-radius: 5px; background: #fff;}
+.cart-item-info { flex-grow: 1; margin: 0 15px; }
+.cart-item-info h4 { font-size: 0.95rem; margin-bottom: 5px; }
+.cart-item-actions button { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 5px; font-size: 1.2rem; }
+.cart-footer { padding: 20px; border-top: 1px solid #222; background: #070707; }
+
+/* COMPONENTE DE GAMIFICACIÓN: Barra de Envío Gratis */
+.shipping-progress-container { margin-bottom: 15px; padding: 10px; background: rgba(15, 15, 15, 0.8); border-radius: 8px; border: 1px dashed var(--neon-purple); text-align: center; }
+.shipping-progress-bar { width: 100%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.shipping-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink)); transition: width 0.5s ease-in-out, background 0.3s; }
+.shipping-text { font-size: 0.8rem; color: var(--text-muted); }
+.shipping-text strong { color: var(--neon-pink); font-size: 0.9rem;}
+.cart-summary { margin-bottom: 15px; font-size: 0.9rem; border-bottom: 1px dashed #333; padding-bottom: 10px; }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--text-muted); }
+.cart-total { font-size: 1.4rem; font-weight: bold; color: var(--neon-pink); display: flex; justify-content: space-between; }
+
+/* MODAL DE CHECKOUT (Pasarela de Pagos) */
+.payment-methods { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
+.payment-card { background: #fff; padding: 5px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 55px; height: 35px; }
+.payment-card img { width: 100%; height: 100%; object-fit: contain; }
+.payment-card.active { border-color: var(--neon-pink); box-shadow: 0 0 10px rgba(255, 42, 117, 0.5); transform: scale(1.05); }
+
+/* Banner de promesa de privacidad "Empaque Ciego" en el checkout */
+.blind-packaging-banner { display: flex; align-items: center; background: rgba(138, 43, 226, 0.1); border: 1px dashed var(--neon-purple); border-radius: 8px; padding: 10px; margin-bottom: 15px; gap: 10px; }
+.box-icon-container i { font-size: 1.5rem; color: #d2b48c; animation: floatBox 3s ease-in-out infinite; text-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+.blind-packaging-text { font-size: 0.75rem; color: var(--text-light); line-height: 1.3; }
+.blind-packaging-text strong { color: var(--neon-pink); font-size: 0.85rem; }
+@keyframes floatBox { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0); } }
+
+/* FAKE TRACKER (Animación de rastreo de pedido) */
+.tracker-steps { margin-top: 25px; display: none; text-align: left; }
+.tracker-step { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: #444; position: relative; transition: 0.5s; opacity: 0.5; }
+.tracker-step::before { content: ''; position: absolute; left: 13px; top: 30px; bottom: -20px; width: 2px; background: #222; z-index: 1; }
+.tracker-step:last-child::before { display: none; }
+.tracker-icon { width: 28px; height: 28px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; z-index: 2; font-size: 0.8rem; border: 2px solid #333; transition: 0.5s; color: #333;}
+.tracker-step.active { color: var(--text-light); opacity: 1; }
+.tracker-step.active .tracker-icon { background: var(--neon-pink); border-color: var(--neon-pink); color: white; box-shadow: 0 0 12px var(--neon-pink); }
+
+/* VISTA RÁPIDA DE PRODUCTOS Y SECCIÓN DE ADMINISTRADOR */
+.reviews-container { margin-top: 15px; border-top: 1px dashed #333; padding-top: 10px; max-height: 130px; overflow-y: auto; }
+.review-item { font-size: 0.8rem; color: #ccc; margin-bottom: 8px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 5px; border-left: 2px solid var(--neon-purple); }
+.star-rating { color: #ffd700; font-size: 0.75rem; margin-bottom: 5px; }
+
+/* Botón flotante para guardar en Wishlist sobre la tarjeta de producto */
+.btn-wishlist { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.5); border: 1px solid #444; color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 5; font-size: 1rem; }
+.btn-wishlist:hover { transform: scale(1.1); border-color: var(--neon-pink); }
+.btn-wishlist.active { color: var(--neon-pink); border-color: var(--neon-pink); background: rgba(255, 42, 117, 0.1); }
+
+/* Botones flotantes de Edición/Eliminación exclusivo para administradores */
+.admin-controls { position: absolute; top: 12px; right: 12px; display: flex; gap: 5px; background: rgba(0,0,0,0.8); padding: 5px; border-radius: 8px; z-index: 10; }

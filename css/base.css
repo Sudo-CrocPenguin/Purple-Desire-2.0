@@ -1,0 +1,46 @@
+/* ==========================================================================
+   ESTILOS BASE Y UTILIDADES GLOBALES
+   Resetea el navegador y define el comportamiento fundamental de la página.
+   ========================================================================== */
+
+/* Reset básico para que todos los navegadores partan del mismo punto */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+/* Configuración general del body */
+body { background-color: var(--bg-dark); color: var(--text-light); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* Clase de utilidad para evitar que el usuario haga scroll cuando hay un modal abierto */
+body.no-scroll { overflow: hidden; }
+
+/* 
+   SFW MODE (Safe For Work / Modo Discreto) 
+   Desenfoca y quita el color a las imágenes para dar privacidad.
+   Excluye la imagen de detalle grande para que el zoom funcione nítido al hacer clic.
+*/
+body.sfw-mode .product-img,
+body.sfw-mode .slide-img,
+body.sfw-mode .cart-item img {
+    filter: blur(15px) grayscale(30%);
+    transition: filter 0.4s ease;
+}
+body.sfw-mode .product-img:hover,
+body.sfw-mode .slide-img:hover,
+body.sfw-mode .cart-item img:hover {
+    filter: blur(0) grayscale(0); /* Revela la imagen temporalmente al pasar el mouse */
+}
+
+/* Personalización moderna de la barra de desplazamiento (Scrollbar) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 4px; }
+
+/* Clases utilitarias de uso frecuente */
+.neon-text { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255, 42, 117, 0.6); }
+.hidden { display: none !important; }
+
+/* Efecto de cristal esmerilado (Glassmorphism) para los modales */
+.glass-effect { background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 42, 117, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); }
+
+/* Animación genérica de entrada suave */
+.fade-in { animation: fadeIn 0.8s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }

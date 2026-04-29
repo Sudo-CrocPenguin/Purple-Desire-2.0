@@ -1,0 +1,13 @@
+/* ==========================================================================
+   VARIABLES GLOBALES (Custom Properties)
+   Aquí centralizamos los colores y configuraciones visuales del proyecto.
+   Si en el futuro queremos cambiar el color principal, solo lo cambiamos aquí.
+   ========================================================================== */
+:root {
+    --bg-dark: #070707;       /* Fondo principal ultra oscuro para dar toque clandestino */
+    --bg-card: #121212;       /* Fondo ligeramente más claro para las tarjetas de producto */
+    --neon-pink: #ff2a75;     /* Color de acento principal (Botones, íconos, precios) */
+    --neon-purple: #8a2be2;   /* Color secundario (Degradados y hover effects) */
+    --text-light: #ffffff;    /* Texto principal legible */
+    --text-muted: #888888;    /* Texto secundario (Descripciones cortas, placeholders) */
+}

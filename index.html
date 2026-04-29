@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purple Desire | Boutique Sensual Anónima</title>
+    
+    <!-- ============================================== -->
+    <!-- ARQUITECTURA MODULAR DE ESTILOS CSS            -->
+    <!-- Separados por responsabilidad lógica           -->
+    <!-- ============================================== -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modals.css">
+    
+    <!-- Fuente de íconos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<!-- La clase 'sfw-mode' carga el efecto BLUR por defecto al iniciar -->
+<body class="sfw-mode no-scroll">
+
+    <!-- ============================================== -->
+    <!-- ÁREA DE MODALES (VENTANAS EMERGENTES)          -->
+    <!-- ============================================== -->
+
+    <!-- MODAL DE EDAD (+18) - Seguridad y Control de Acceso -->
+    <div id="ageModal" class="modal-overlay active">
+        <div class="modal-content glass-effect">
+            <i class="fa-solid fa-user-shield neon-text" style="font-size: 3rem;"></i>
+            <h2>Acceso Restringido (+18)</h2>
+            <p>Este sitio contiene productos para adultos. Su navegación es 100% anónima y segura. ¿Eres mayor de edad?</p>
+            <div class="modal-buttons" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                <button id="btnYes" class="btn btn-primary">Sí, soy mayor</button>
+                <button id="btnNo" class="btn btn-outline">No (Salir)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALERTAS PERSONALIZADAS - Reemplaza los clásicos 'alert()' del navegador -->
+    <div id="customAlertModal" class="modal-overlay">
+        <div class="modal-content glass-effect" style="text-align: center;">
+            <div id="alertIcon" style="font-size: 3rem; margin-bottom: 10px;"></div>
+            <h2 id="alertTitle" style="margin-bottom: 10px; font-size: 1.3rem;"></h2>
+            <p id="alertMessage" style="color: var(--text-muted); margin-bottom: 20px; white-space: pre-line;"></p>
+            <button class="btn btn-primary w-100" onclick="cerrarAlertaPersonalizada()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- MODAL WISHLIST - Lista de favoritos del usuario -->
+    <div id="wishlistModal" class="modal-overlay">
+        <div class="modal-content glass-effect" style="max-width: 450px;">
+            <span class="close-btn" onclick="document.getElementById('wishlistModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
+            <h2 style="margin-bottom: 5px;"><i class="fa-solid fa-heart neon-text"></i> Tus Secretos</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Nadie más que tú puede ver esta lista.</p>
+            <div id="wishlistItemsContainer" style="max-height: 50vh; overflow-y: auto; padding-right: 5px;"></div>
+            <button class="btn btn-outline w-100" style="margin-top: 15px;" onclick="document.getElementById('wishlistModal').classList.remove('active'); document.body.classList.remove('no-scroll');">Seguir Explorando</button>
+        </div>
+    </div>
+
+    <!-- MODAL FAKE TRACKER - Experiencia simulada de rastreo de paquetes -->
+    <div id="trackerModal" class="modal-overlay">
+        <div class="modal-content glass-effect" style="max-width: 450px;">
+            <span class="close-btn" onclick="document.getElementById('trackerModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
+            <h2 style="margin-bottom: 5px;"><i class="fa-solid fa-truck-fast neon-text"></i> Rastreo Discreto</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Ingresa tu código de guía secreto.</p>
+            
+            <form id="trackerForm" style="display: flex; gap: 10px;">
+                <input type="text" id="trackerInput" placeholder="Ej: PD-987654321" required style="margin: 0;">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+
+            <div id="trackerSteps" class="tracker-steps">
+                <div class="tracker-step" id="step1">
+                    <div class="tracker-icon"><i class="fa-solid fa-box"></i></div>
+                    <div><strong>1. Empacado Discreto</strong><br><span style="font-size:0.75rem;">Sin logos ni facturas visibles.</span></div>
+                </div>
+                <div class="tracker-step" id="step2">
+                    <div class="tracker-icon"><i class="fa-solid fa-truck-secret"></i></div>
+                    <div><strong>2. En Tránsito Seguro</strong><br><span style="font-size:0.75rem;">Vehículo sin marcas.</span></div>
+                </div>
+                <div class="tracker-step" id="step3">
+                    <div class="tracker-icon"><i class="fa-solid fa-house-circle-check"></i></div>
+                    <div><strong>3. Listo para Entrega</strong><br><span style="font-size:0.75rem;">Próximo a llegar a tus manos.</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL VISTA RÁPIDA - QuickView del Producto al dar click en la imagen (Sin Blur) -->
+    <div id="productModal" class="modal-overlay">
+        <div class="modal-content glass-effect" style="max-width: 600px; display: flex; flex-wrap: wrap; gap: 20px; text-align: left;">
+            <span class="close-btn" onclick="document.getElementById('productModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
+            <div style="flex: 1; min-width: 250px;">
+                <img id="detailImg" src="" style="width: 100%; border-radius: 10px; background: white; padding: 10px; object-fit: contain;">
+            </div>
+            <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center;">
+                <h2 id="detailName" style="margin-bottom: 5px;"></h2>
+                <h3 id="detailPrice" class="neon-text" style="font-size: 1.5rem; margin-bottom: 10px;"></h3>
+                <p id="detailDesc" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;"></p>
+                <div id="detailReviews" class="reviews-container"></div>
+                <button id="detailBtnAdd" class="btn btn-primary w-100" style="margin-top: 15px;"><i class="fa-solid fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL INVITADO - Perfil desechable que permite Auto-Relleno (Auto-Fill) futuro -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content glass-effect">
+            <span class="close-btn" onclick="document.getElementById('authModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
+            <h2>Modo Incógnito</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.9rem;">Compra sin dejar rastro.</p>
+            <button id="btnGuest" class="btn btn-outline w-100" style="margin-bottom: 15px;">
+                <i class="fa-solid fa-user-secret"></i> Navegar como Invitado Rápido
+            </button>
+            <div style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem;">- O CREA UN PERFIL DESECHABLE (AUTORELLENO) -</div>
+            <form id="authForm">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="alias" placeholder="Escribe un Alias o apodo" required>
+                    <button type="button" id="btnRandomAlias" class="btn btn-secondary" title="Generar Alias Aleatorio"><i class="fa-solid fa-dice"></i></button>
+                </div>
+                
+                <div style="color: var(--text-muted); margin: 15px 0 5px 0; font-size: 0.8rem; border-top: 1px solid #333; padding-top:10px;">- DATOS DE ENVÍO (Opcional) -</div>
+                <input type="email" id="guestEmail" placeholder="Correo electrónico (Recibos)">
+                <input type="text" id="guestAddress" placeholder="Dirección de entrega">
+                <select id="guestCity">
+                    <option value="">Ciudad (Valle de Aburrá)...</option>
+                    <option value="Medellín">Medellín</option>
+                    <option value="Bello">Bello</option>
+                    <option value="Itagüí">Itagüí</option>
+                    <option value="Envigado">Envigado</option>
+                    <option value="Sabaneta">Sabaneta</option>
+                    <option value="Copacabana">Copacabana</option>
+                    <option value="La Estrella">La Estrella</option>
+                    <option value="Girardota">Girardota</option>
+                    <option value="Caldas">Caldas</option>
+                    <option value="Barbosa">Barbosa</option>
+                </select>
+                <!-- Limitante de Geografía (Valle de Aburrá) -->
+                <p style="font-size: 0.8rem; color: var(--neon-pink); margin-top: 5px; text-align:left;"><i class="fa-solid fa-circle-exclamation"></i> Envíos exclusivos al Valle de Aburrá.</p>
+                
+                <div style="color: var(--text-muted); margin: 15px 0 5px 0; font-size: 0.8rem; border-top: 1px solid #333; padding-top:10px;">- DATOS DE PAGO (Opcional) -</div>
+                <input type="text" id="guestCardNum" placeholder="Número de Tarjeta (Ej: 4111...)" maxlength="16">
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="guestCardExp" placeholder="MM/AA" maxlength="5">
+                    <input type="password" id="guestCardCVC" placeholder="CVC" maxlength="4">
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Entrar y Guardar Datos</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ADMIN - Simulación de Creación y Edición de Productos CRUD -->
+    <div id="adminModal" class="modal-overlay">
+        <div class="modal-content glass-effect">
+            <span class="close-btn" onclick="document.getElementById('adminModal').classList.remove('active'); document.body.classList.remove('no-scroll');">&times;</span>
+            <h2 id="adminModalTitle">Nuevo Producto</h2>
+            <form id="adminForm">
+                <input type="hidden" id="prodId">
+                <input type="text" id="prodName" placeholder="Nombre del producto" required>
+                <input type="text" id="prodDesc" placeholder="Breve descripción" required>
+                <input type="number" id="prodPrice" placeholder="Precio en COP (Ej: 45000)" step="100" required>
+                <select id="prodCategory" required>
+                    <option value="juguetes">Juguetes</option>
+                    <option value="lenceria">Lencería</option>
+                    <option value="bienestar">Bienestar</option>
+                </select>
+                <input type="text" id="prodImg" placeholder="Ruta de imagen (ej: images/foto.png)" required>
+                <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CHECKOUT - Pasarela de pago final que recibe el Autorelleno -->
+    <div id="checkoutModal" class="modal-overlay">
+        <div class="modal-content glass-effect" style="max-width: 400px; text-align: left; padding: 20px;">
+            <span class="close-btn" onclick="document.getElementById('checkoutModal').classList.remove('active'); document.body.classList.remove('no-scroll');" style="top: 5px; right: 15px;">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 5px; font-size: 1.3rem;"><i class="fa-solid fa-lock" style="color: #4cd137;"></i> Pago Seguro</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 15px;">Total a pagar: <span class="neon-text" style="font-size: 1.1rem; font-weight: bold;">$<span id="checkoutTotal">0</span></span></p>
+            
+            <div class="blind-packaging-banner">
+                <div class="box-icon-container"><i class="fa-solid fa-box"></i></div>
+                <div class="blind-packaging-text">
+                    <strong>Empaque Ciego</strong><br>
+                    Cero logos o facturas visibles. 100% confidencial.
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 42, 117, 0.1); border: 1px dashed var(--neon-pink); padding: 8px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                <span style="color: var(--neon-pink); font-size: 0.85rem; font-weight: bold;">
+                    <i class="fa-solid fa-location-dot"></i> Solo envíos en el Valle de Aburrá.
+                </span>
+            </div>
+            
+            <form id="paymentForm">
+                <h4 style="margin-bottom: 5px; font-size: 0.9rem; border-bottom: 1px solid #333; padding-bottom: 3px;">1. Datos de Envío y Recibo</h4>
+                <input type="email" id="checkoutEmail" placeholder="Correo (para recibo anónimo)" required>
+                <input type="text" id="checkoutAddress" placeholder="Dirección de envío (Valle de Aburrá)" required>
+                
+                <h4 style="margin-top: 12px; margin-bottom: 5px; font-size: 0.9rem; border-bottom: 1px solid #333; padding-bottom: 3px;">2. Método de Pago</h4>
+                <div class="payment-methods">
+                    <div class="payment-card active" onclick="selectPayment(this)"><img src="payment/visa.png" alt="Visa" onerror="this.src='https://via.placeholder.com/40x20?text=V'"></div>
+                    <div class="payment-card" onclick="selectPayment(this)"><img src="payment/mastercard.png" alt="Mastercard" onerror="this.src='https://via.placeholder.com/40x20?text=MC'"></div>
+                    <div class="payment-card" onclick="selectPayment(this)"><img src="payment/amex.png" alt="Amex" onerror="this.src='https://via.placeholder.com/40x20?text=Amex'"></div>
+                    <div class="payment-card" onclick="selectPayment(this)"><img src="payment/paypal.png" alt="PayPal" onerror="this.src='https://via.placeholder.com/40x20?text=PayP'"></div>
+                    <div class="payment-card" onclick="selectPayment(this)"><img src="payment/pse.png" alt="PSE" onerror="this.src='https://via.placeholder.com/40x20?text=PSE'"></div>
+                </div>
+
+                <h4 style="margin-top: 12px; margin-bottom: 5px; font-size: 0.9rem; border-bottom: 1px solid #333; padding-bottom: 3px;">3. Tarjeta</h4>
+                <input type="text" id="checkoutCardNum" placeholder="Número de Tarjeta (Ej: 4111 ...)" maxlength="16" required>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="checkoutCardExp" placeholder="MM/AA" maxlength="5" required>
+                    <input type="password" id="checkoutCardCVC" placeholder="CVC" maxlength="4" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px; font-size: 1rem; padding: 10px;">
+                    <i class="fa-solid fa-shield-check"></i> Finalizar Compra
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- INTERFAZ PRINCIPAL VISIBLE                     -->
+    <!-- ============================================== -->
+
+    <!-- NAVEGACIÓN PRINCIPAL (Barra superior fija) -->
+    <header>
+        <div class="logo">
+            <h1>Purple <span class="neon-text">Desire</span></h1>
+        </div>
+        <nav>
+            <button id="btnAdminPanel" class="nav-btn hidden" onclick="abrirAdminModal()"><i class="fa-solid fa-plus"></i> Añadir Prod.</button>
+            <button id="btnLogin" class="nav-btn"><i class="fa-solid fa-user-secret"></i> <span id="userNameDisplay">Invitado</span></button>
+            
+            <!-- Botón del efecto CENSURA (BLUR) -->
+            <button class="nav-btn" onclick="toggleSFW()" title="Modo Discreto (Censurar Imágenes)">
+                <i id="sfwIcon" class="fa-solid fa-eye-slash"></i>
+            </button>
+
+            <!-- Lanzador del Simulador de Rastreo de Envíos -->
+            <button class="nav-btn" onclick="abrirTracker()" title="Rastrear Paquete Anónimo">
+                <i class="fa-solid fa-box-open"></i>
+            </button>
+
+            <!-- Lista de Favoritos -->
+            <button id="btnWishlistToggle" class="nav-btn" onclick="abrirWishlistModal()">
+                <i class="fa-solid fa-heart"></i> 
+                <span id="wishlistCount" class="badge" style="background:var(--neon-purple);">0</span>
+            </button>
+            
+            <!-- Despliegue del panel lateral de Carrito -->
+            <button id="btnCartToggle" class="nav-btn"><i class="fa-solid fa-bag-shopping"></i> <span id="cartCount" class="badge">0</span></button>
+        </nav>
+    </header>
+
+    <!-- CARRITO LATERAL (Se desliza desde la derecha de la pantalla) -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Selección Discreta</h3>
+            <button class="close-btn-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            
+            <div id="shippingProgressContainer" class="shipping-progress-container">
+                <div class="shipping-text" id="shippingText">Faltan <strong>$150.000</strong> para envío gratis</div>
+                <div class="shipping-progress-bar">
+                    <div class="shipping-progress-fill" id="shippingFill"></div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-row"><span>Subtotal:</span> <span>$<span id="cartSubtotal">0</span></span></div>
+                <div class="summary-row"><span>Impuestos (10%):</span> <span>$<span id="cartTax">0</span></span></div>
+                <div class="summary-row"><span>Envío Discreto:</span> <span>$<span id="cartShipping">0</span></span></div>
+            </div>
+            <div class="cart-total"><span>TOTAL:</span> <span>$<span id="cartTotal">0</span></span></div>
+            <button class="btn btn-primary w-100" onclick="abrirCheckout()" style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Ir a Pagar</button>
+        </div>
+    </div>
+
+    <!-- HERO SECTION (Banner y lema principal) -->
+    <section class="hero">
+        <div class="hero-text fade-in">
+            <h2>Placer sin rastros</h2>
+            <p>Elegancia, calidad y envíos en paquetes sin logotipos. Nadie sabrá qué pediste.</p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE OFERTAS Y GAMIFICACIÓN -->
+    <section class="featured-section">
+        <h3 class="section-title"><i class="fa-solid fa-fire" style="color: var(--neon-pink);"></i> Destacados del Mes</h3>
+        <div class="slider-container" id="sliderContainer">
+            <div class="slider-track" id="sliderTrack"></div>
+        </div>
+    </section>
+
+    <!-- MOTOR DE FILTROS Y GRILLA DE PRODUCTOS -->
+    <main>
+        <!-- Barra de filtros adherente (Se pega arriba al hacer scroll) -->
+        <div class="sticky-filter-bar">
+            <div class="filters">
+                <button class="filter-btn active" onclick="filtrar('todos')">Todo</button>
+                <button class="filter-btn" onclick="filtrar('juguetes')">Juguetes</button>
+                <button class="filter-btn" onclick="filtrar('lenceria')">Lencería</button>
+                <button class="filter-btn" onclick="filtrar('bienestar')">Bienestar</button>
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <div style="position: relative; max-width: 300px; width: 100%;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; top: 12px; left: 15px; color: var(--text-muted);"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar producto..." style="margin: 0; padding-left: 40px; padding-top:10px; padding-bottom:10px;">
+                </div>
+                <select id="sortSelect" style="max-width: 200px; margin: 0; padding-top:10px; padding-bottom:10px;">
+                    <option value="default">Recomendados</option>
+                    <option value="low-high">Precio: Menor a Mayor</option>
+                    <option value="high-low">Precio: Mayor a Menor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Contenedor vacío donde JS inyecta dinámicamente las tarjetas (Grid) -->
+        <div class="catalog-container">
+            <div id="productGrid" class="product-grid"></div>
+        </div>
+    </main>
+
+    <!-- FOOTER INFORMATIVO -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>Purple <span class="neon-text">Desire</span></h2>
+                <p>Tu secreto mejor guardado. Compras 100% discretas y seguras.</p>
+            </div>
+            <div class="footer-contact">
+                <h3>Contacto Discreto</h3>
+                <p><i class="fa-solid fa-envelope"></i> ventas@purpledesire.com</p>
+                <p><i class="fa-brands fa-whatsapp"></i> +57 300 000 0000</p>
+            </div>
+            <div class="footer-social">
+                <h3>Comunidad</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Purple Desire. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Contenedor general para Notificaciones Temporales (Toast) inyectadas por JS -->
+    <div id="toast-container"></div>
+
+    <!-- BOTÓN FLOTANTE WHATSAPP (Soporte en línea) -->
+    <a href="https://wa.me/573000000000?text=Hola,%20tengo%20una%20duda%20sobre%20un%20producto." class="whatsapp-float" target="_blank" title="Chat Anónimo">
+        <i class="fa-brands fa-whatsapp" style="font-size: 1.6rem;"></i>
+        <span class="wa-text">¿Dudas? Chat Anónimo</span>
+    </a>
+
+    <!-- ============================================== -->
+    <!-- SCRIPT PRINCIPAL (Importado como MÓDULO)       -->
+    <!-- Esto habilita el uso de import/export en JS    -->
+    <!-- ============================================== -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
