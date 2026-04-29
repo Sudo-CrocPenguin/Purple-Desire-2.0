@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Vendedor | Purple Desire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="vendor.css">
+</head>
+<body>
+    <!-- Header del Panel -->
+    <header class="vendor-header">
+        <div class="logo">
+            <h1>Purple <span>Desire</span></h1>
+            <span class="badge-vendor">Panel de Vendedor</span>
+        </div>
+        <div class="user-info">
+            <span id="vendorName">Vendedor</span>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+        </div>
+    </header>
+
+    <!-- Dashboard Stats -->
+    <section class="dashboard-stats" id="dashboardStats">
+        <div class="stat-card">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="stat-info">
+                <h3>Total Pedidos</h3>
+                <p id="totalOrders">0</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <div class="stat-info">
+                <h3>Pendientes</h3>
+                <p id="pendingOrders">0</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-truck"></i>
+            <div class="stat-info">
+                <h3>En Camino</h3>
+                <p id="inTransitOrders">0</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-dollar-sign"></i>
+            <div class="stat-info">
+                <h3>Ingresos Totales</h3>
+                <p id="totalRevenue">$0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navegación de Tabs -->
+    <nav class="vendor-tabs">
+        <button class="tab-btn active" onclick="switchTab('orders')">
+            <i class="fas fa-list-check"></i> Pedidos
+        </button>
+        <button class="tab-btn" onclick="switchTab('products')">
+            <i class="fas fa-box"></i> Productos
+        </button>
+        <button class="tab-btn" onclick="switchTab('add-product')">
+            <i class="fas fa-plus-circle"></i> Nuevo Producto
+        </button>
+        <button class="tab-btn" onclick="switchTab('inventory')">
+            <i class="fas fa-warehouse"></i> Inventario
+        </button>
+    </nav>
+
+    <!-- Contenido de Tabs -->
+    <main class="vendor-content">
+        <!-- Tab de Pedidos -->
+        <div id="orders-tab" class="tab-content active">
+            <div class="tab-header">
+                <h2>Gestión de Pedidos</h2>
+                <div class="filter-controls">
+                    <select id="orderFilter" onchange="loadOrders()">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendientes</option>
+                        <option value="confirmado">Confirmados</option>
+                        <option value="empacando">Empacando</option>
+                        <option value="en_camino">En Camino</option>
+                        <option value="entregado">Entregados</option>
+                        <option value="cancelado">Cancelados</option>
+                    </select>
+                    <input type="text" id="orderSearch" placeholder="Buscar por código..." onkeyup="loadOrders()">
+                </div>
+            </div>
+            <div class="orders-list" id="ordersList">
+                <p class="loading">Cargando pedidos...</p>
+            </div>
+        </div>
+
+        <!-- Tab de Productos -->
+        <div id="products-tab" class="tab-content">
+            <div class="tab-header">
+                <h2>Productos</h2>
+                <div class="filter-controls">
+                    <select id="productFilter" onchange="loadProducts()">
+                        <option value="">Todas las categorías</option>
+                        <option value="juguetes">Juguetes</option>
+                        <option value="lenceria">Lencería</option>
+                        <option value="bienestar">Bienestar</option>
+                    </select>
+                    <input type="text" id="productSearch" placeholder="Buscar producto..." onkeyup="loadProducts()">
+                </div>
+            </div>
+            <div class="products-grid" id="productsList">
+                <p class="loading">Cargando productos...</p>
+            </div>
+        </div>
+
+        <!-- Tab de Nuevo/Editar Producto -->
+        <div id="add-product-tab" class="tab-content">
+            <h2 id="formTitle">Agregar Nuevo Producto</h2>
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="productDesc" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio (COP)</label>
+                        <input type="number" id="productPrice" min="0" step="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Inicial</label>
+                        <input type="number" id="productStock" min="0" value="10" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="productCategory" required>
+                            <option value="juguetes">Juguetes</option>
+                            <option value="lenceria">Lencería</option>
+                            <option value="bienestar">Bienestar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>URL de Imagen</label>
+                        <input type="text" id="productImg" placeholder="images/producto.jpg" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-undo"></i> Limpiar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab de Inventario -->
+        <div id="inventory-tab" class="tab-content">
+            <h2>Control de Inventario</h2>
+            <div class="inventory-alerts" id="lowStockAlerts">
+                <h3><i class="fas fa-exclamation-triangle"></i> Alertas de Stock Bajo</h3>
+                <div id="lowStockList"></div>
+            </div>
+            <div class="inventory-grid" id="inventoryList">
+                <p class="loading">Cargando inventario...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Detalle de Pedido -->
+    <div id="orderDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orderDetailModal')">&times;</span>
+            <h2>Detalle del Pedido</h2>
+            <div id="orderDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close" onclick="closeModal('confirmModal')">&times;</span>
+            <h3 id="confirmTitle">Confirmar Acción</h3>
+            <p id="confirmMessage"></p>
+            <div class="modal-actions">
+                <button class="btn-danger" id="confirmBtn" onclick="">Confirmar</button>
+                <button class="btn-secondary" onclick="closeModal('confirmModal')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificaciones -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="vendor.js"></script>
+</body>
+</html>
